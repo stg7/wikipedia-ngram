@@ -2,5 +2,5 @@
 
 mkdir -p tools
 cd tools
-git clone "https://github.com/bwbaugh/wikipedia-extractor.git"
+git clone "https://github.com/attardi/wikiextractor"
 cd ..
