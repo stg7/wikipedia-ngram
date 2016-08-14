@@ -6,9 +6,11 @@ from multiprocessing import Pool
 import multiprocessing
 import fileinput
 
+
 def find_ngrams(input_list, n):
     """ from http://locallyoptimal.com/blog/2013/01/20/elegant-n-gram-generation-in-python/ """
     return list(zip(*[input_list[i:] for i in range(n)]))
+
 
 def get_ngrams(text):
     words = text.split()
@@ -17,17 +19,15 @@ def get_ngrams(text):
         ngrams += [" ".join(x) for x in find_ngrams(words, n)]
     return ngrams
 
+
 def extract_ngram(params):
     infile, outfile = params
-    print(infile)
-    print(outfile)
-    input = fileinput.FileInput(infile, openhook=fileinput.hook_compressed)
     docs = []
     cdoc = ""
-    for line in input:
+    for line in fileinput.FileInput(infile, openhook=fileinput.hook_compressed):
         l = str(line)
         if "</doc>" in l:
-            docs.append(cdoc)
+            docs.append(cdoc.replace("\n", " "))
             cdoc = ""
         else:
             if not "<doc" in l:
@@ -36,8 +36,9 @@ def extract_ngram(params):
     for d in docs:
         ngrams = get_ngrams(d)
         for x in ngrams:
-            f.write(x + "\t1")
+            f.write(x + "\t1\n")
     f.close()
+
 
 def main(params):
     parser = argparse.ArgumentParser(description='wikipedia ngram extractor', epilog="stg7 2016")
