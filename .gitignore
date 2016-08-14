@@ -1,4 +1,5 @@
 dataset/*.bz2
 out
 dataset/index.html*
-tools/wikipedia-extractor
+tools/wikiextractor
+ngram.*
