@@ -22,6 +22,7 @@ def get_ngrams(text):
 
 def extract_ngram(params):
     infile, outfile = params
+    print(infile)
     docs = []
     cdoc = ""
     for line in fileinput.FileInput(infile, openhook=fileinput.hook_compressed):
@@ -45,9 +46,13 @@ def main(params):
     parser.add_argument('infile', nargs="+", type=str, help="wikipedia input files")
     parser.add_argument('-o', type=str, help="ngram output directory")
     parser.add_argument('--cpu_count',type=int, default=multiprocessing.cpu_count(), help='thread/cpu count')
+    parser.add_argument('-c', dest='clean', action='store_true', help='clean older results')
 
     argsdict = vars(parser.parse_args())
     cpu_count = argsdict["cpu_count"]
+
+    if argsdict['clean']:
+        os.system("rm -rf ngram.*")
 
     infiles = argsdict["infile"]
     print(infiles)
