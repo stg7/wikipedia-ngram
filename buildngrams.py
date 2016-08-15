@@ -33,6 +33,7 @@ def extract_ngram(params):
         else:
             if not "<doc" in l:
                 cdoc += l
+    # TODO: write a compressed file
     f = open(outfile, "a")
     for d in docs:
         ngrams = get_ngrams(d)
