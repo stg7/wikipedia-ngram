@@ -32,7 +32,7 @@ def extract_ngram(params):
         else:
             if not "<doc" in l:
                 cdoc += l
-    f = open(outfile, "w")
+    f = open(outfile, "a")
     for d in docs:
         ngrams = get_ngrams(d)
         for x in ngrams:
