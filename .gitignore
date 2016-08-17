@@ -3,3 +3,5 @@ out
 dataset/index.html*
 tools/wikiextractor
 ngram.*
+*.gz
+*.lzma
