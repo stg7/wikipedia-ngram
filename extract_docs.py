@@ -4,22 +4,27 @@ import os
 import argparse
 from multiprocessing import Pool
 import multiprocessing
+import glob
+import fileinput
 
+def find(dirname):
+    tmp = glob.glob(dirname + "/*")
+    r = []
+    for p in tmp:
+        if os.path.isdir(p):
+            r += find(p)
+        else:
+            r.append(p)
+    return r
 
-def main(params):
-    if len(params) == 0:
-        outdir = "sep_txt/"
-    else:
-        outdir = params[0]
-
-    os.makedirs(outdir, exist_ok=True)
-
+def extract_doc(infile, outdir):
     doc_start = False
     doc = ""
     doc_title = ""
     doc_id = ""
+    fi = fileinput.FileInput(infile, openhook=fileinput.hook_compressed)
 
-    for line in sys.stdin:
+    for line in fi:
         if doc_start:
             doc += line
         if "<doc" in line:
@@ -36,6 +41,28 @@ def main(params):
             doc = ""
             doc_id = ""
             doc_title = ""
+    fi.close()
+
+def main(params):
+    parser = argparse.ArgumentParser(description='wiki doc extractor', epilog="stg7 2016", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--outdir', type=str, default="sep_txt", help='outdir of seperated txt files')
+    parser.add_argument('indir', type=str, help='input directory')
+
+    argsdict = vars(parser.parse_args())
+
+    outdir = argsdict["outdir"]
+
+    os.makedirs(outdir, exist_ok=True)
+    if not os.path.isdir(argsdict["indir"]):
+        print("[error] {} is not a dir".format(argsdict["indir"]))
+        return 1
+
+    infiles = find(argsdict["indir"])
+
+    cpu_count = multiprocessing.cpu_count()
+    pool = Pool(processes=cpu_count)
+    pool.starmap(extract_doc, zip(infiles, [outdir for x in infiles]))
+
 
 
 if __name__ == "__main__":
