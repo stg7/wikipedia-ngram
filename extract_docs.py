@@ -25,6 +25,7 @@ def extract_doc(infile, outdir):
     fi = fileinput.FileInput(infile, openhook=fileinput.hook_compressed)
 
     for line in fi:
+        line = str(line)
         if doc_start:
             doc += line
         if "<doc" in line:
@@ -35,7 +36,10 @@ def extract_doc(infile, outdir):
             doc_start = False
             print((doc_id, doc_title))
             if doc_id != "":
-                f = open(outdir + str(doc_id) + ".txt", "w")
+                path = os.path.dirname(infile)
+                outpath = outdir + "/" + path + "/"
+                os.makedirs(outpath, exist_ok=True)
+                f = open(outpath + str(doc_id) + ".txt", "w")
                 f.write(doc)
                 f.close()
             doc = ""
