@@ -7,6 +7,7 @@ import multiprocessing
 import glob
 import fileinput
 
+
 def find(dirname):
     tmp = glob.glob(dirname + "/*")
     r = []
@@ -16,6 +17,7 @@ def find(dirname):
         else:
             r.append(p)
     return r
+
 
 def extract_doc(infile, outdir):
     doc_start = False
@@ -28,7 +30,7 @@ def extract_doc(infile, outdir):
 
         for line in fi:
             line = line.decode('utf-8')
-            if doc_start and not "</doc" in line:
+            if doc_start and "</doc" not in line:
                 doc += line
             if "<doc" in line:
                 doc_start = True
@@ -51,6 +53,7 @@ def extract_doc(infile, outdir):
     except Exception as e:
         print("[error] " + str(e))
 
+
 def main(params):
     parser = argparse.ArgumentParser(description='wiki doc extractor', epilog="stg7 2016", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--outdir', type=str, default="sep_txt", help='outdir of seperated txt files')
@@ -70,7 +73,6 @@ def main(params):
     cpu_count = multiprocessing.cpu_count()
     pool = Pool(processes=cpu_count)
     pool.starmap(extract_doc, zip(infiles, [outdir for x in infiles]))
-
 
 
 if __name__ == "__main__":

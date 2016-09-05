@@ -7,7 +7,6 @@ import multiprocessing
 import fileinput
 
 
-
 def main(params):
     parser = argparse.ArgumentParser(description='wikipedia ngram reduced merger', epilog="stg7 2016")
 

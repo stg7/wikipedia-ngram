@@ -9,12 +9,13 @@ import multiprocessing
 def do_it(cmd):
     r = os.system(cmd)
     if r != 0:
-         sys.exit(1)
-         print(cmd + " done")
+        sys.exit(1)
+        print(cmd + " done")
+
 
 def main(params):
     parser = argparse.ArgumentParser(description='wikipedia ngram reducer', epilog="stg7 2016")
-    parser.add_argument('--cpu_count',type=int, default=multiprocessing.cpu_count(), help='thread/cpu count')
+    parser.add_argument('--cpu_count', type=int, default=multiprocessing.cpu_count(), help='thread/cpu count')
 
     argsdict = vars(parser.parse_args())
     cpu_count = argsdict["cpu_count"]

@@ -31,7 +31,7 @@ def extract_ngram(params):
             docs.append(cdoc.replace("\n", " "))
             cdoc = ""
         else:
-            if not "<doc" in l:
+            if "<doc" not in l:
                 cdoc += l
     # TODO: write a compressed file
     f = open(outfile, "a")
@@ -46,7 +46,7 @@ def main(params):
     parser = argparse.ArgumentParser(description='wikipedia ngram extractor', epilog="stg7 2016")
     parser.add_argument('infile', nargs="+", type=str, help="wikipedia input files")
     parser.add_argument('-o', type=str, help="ngram output directory")
-    parser.add_argument('--cpu_count',type=int, default=multiprocessing.cpu_count(), help='thread/cpu count')
+    parser.add_argument('--cpu_count', type=int, default=multiprocessing.cpu_count(), help='thread/cpu count')
     parser.add_argument('-c', dest='clean', action='store_true', help='clean older results')
 
     argsdict = vars(parser.parse_args())
@@ -58,7 +58,7 @@ def main(params):
     infiles = argsdict["infile"]
     print(infiles)
     pool = Pool(processes=cpu_count)
-    outfiles = ["ngram." + str(i % cpu_count)  for i in range(0, len(infiles))]
+    outfiles = ["ngram." + str(i % cpu_count) for i in range(0, len(infiles))]
     params = zip(infiles, outfiles)
     pool.map(extract_ngram, params)
 

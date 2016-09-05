@@ -7,7 +7,6 @@ import multiprocessing
 import fileinput
 
 
-
 def main(params):
     parser = argparse.ArgumentParser(description='wikipedia ngram extractor', epilog="stg7 2016")
     current_ngram = ""
