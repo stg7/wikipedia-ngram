@@ -22,30 +22,34 @@ def extract_doc(infile, outdir):
     doc = ""
     doc_title = ""
     doc_id = ""
-    fi = fileinput.FileInput(infile, openhook=fileinput.hook_compressed)
 
-    for line in fi:
-        line = str(line)
-        if doc_start:
-            doc += line
-        if "<doc" in line:
-            doc_start = True
-            doc_id = line.split("id=\"")[1].split("\"")[0]
-            doc_title = line.split("title=\"")[1].split("\"")[0]
-        if "</doc>" in line:
-            doc_start = False
-            print((doc_id, doc_title))
-            if doc_id != "":
-                path = os.path.dirname(infile)
-                outpath = outdir + "/" + path + "/"
-                os.makedirs(outpath, exist_ok=True)
-                f = open(outpath + str(doc_id) + ".txt", "w")
-                f.write(doc)
-                f.close()
-            doc = ""
-            doc_id = ""
-            doc_title = ""
-    fi.close()
+    try:
+        fi = fileinput.FileInput(infile, openhook=fileinput.hook_compressed)
+
+        for line in fi:
+            line = str(line)
+            if doc_start:
+                doc += line
+            if "<doc" in line:
+                doc_start = True
+                doc_id = line.split("id=\"")[1].split("\"")[0]
+                doc_title = line.split("title=\"")[1].split("\"")[0]
+            if "</doc>" in line:
+                doc_start = False
+                print((doc_id, doc_title))
+                if doc_id != "":
+                    path = os.path.dirname(infile)
+                    outpath = outdir + "/" + path + "/"
+                    os.makedirs(outpath, exist_ok=True)
+                    f = open(outpath + str(doc_id) + ".txt", "w")
+                    f.write(doc)
+                    f.close()
+                doc = ""
+                doc_id = ""
+                doc_title = ""
+        fi.close()
+    except Exception as e:
+        print("[error] " + str(e))
 
 def main(params):
     parser = argparse.ArgumentParser(description='wiki doc extractor', epilog="stg7 2016", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
