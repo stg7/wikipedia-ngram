@@ -27,7 +27,7 @@ def extract_doc(infile, outdir):
         fi = fileinput.FileInput(infile, openhook=fileinput.hook_compressed)
 
         for line in fi:
-            line = str(line)
+            line = line.decode('utf-8')
             if doc_start and not "</doc" in line:
                 doc += line
             if "<doc" in line:
