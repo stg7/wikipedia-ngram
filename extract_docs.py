@@ -28,7 +28,7 @@ def extract_doc(infile, outdir):
 
         for line in fi:
             line = str(line)
-            if doc_start:
+            if doc_start and not "</doc" in line:
                 doc += line
             if "<doc" in line:
                 doc_start = True
