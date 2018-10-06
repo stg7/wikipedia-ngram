@@ -1,9 +1,7 @@
-wikipedia-ngram
-===============
+# wikipedia-ngram
 Get all ngrams from (english) wikipedia-dump.
 
-Steps
------
+## Steps
 First you need to download all required tools using
 ```
 ./prepare.sh
@@ -24,12 +22,12 @@ As next step, you need to extract all plaintexts from wiki-dump:
 
 Now you can build ngrams with the following commands:
 ```
-# extract simply all ngrams to seperate files 
-./buildngrams.py out/*/*.bz2    
+# extract simply all ngrams to seperate files
+./buildngrams.py out/*/*.bz2
 
-# combine ngrams 
+# combine ngrams
 ./reduce_all.py
 
-# merge and reduce 
+# merge and reduce
 ./mergereduced.py
 ```
